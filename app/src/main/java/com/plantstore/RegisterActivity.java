@@ -51,6 +51,8 @@ public class RegisterActivity extends AppCompatActivity {
                             if (response.isSuccessful()) {
                                 // Registration successful
                                 Toast.makeText(RegisterActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
+                                // Finish the activity and navigate back to the login screen
+                                finish();
                             } else {
                                 // Registration failed
                                 Toast.makeText(RegisterActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
@@ -60,15 +62,11 @@ public class RegisterActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(Call<User> call, Throwable t) {
                             // Registration failed
-                            Toast.makeText(RegisterActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, "Registration failed here", Toast.LENGTH_SHORT).show();
                         }
                     });
 
-                    // Show registration success message
-                    Toast.makeText(RegisterActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
 
-                    // Finish the activity and navigate back to the login screen
-                    finish();
                 }
             }
         });
