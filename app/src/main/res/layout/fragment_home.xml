@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeFragment">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <!-- Top Row -->
+        <LinearLayout
+            android:id="@+id/topRowLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp">
+            <!-- Greeting -->
+            <TextView
+                android:id="@+id/greetingTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hi, Username"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textSize="30dp"
+                android:textStyle="bold" />
+
+            <!-- Spacer View to Separate Cart Icon and Greeting -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <!-- Cart Icon -->
+            <ImageButton
+                android:id="@+id/cartIcon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:scaleType="centerCrop"
+                android:background="@android:color/transparent"
+                android:contentDescription="Cart Icon"
+                android:src="@drawable/cart" />
+        </LinearLayout>
+
+
+        <!-- Plant Category List -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/categoryRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/topRowLayout"
+            android:layout_marginTop="8dp" />
+
+        <!-- Plant List -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/plantRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/categoryRecyclerView"
+            android:layout_marginTop="8dp" />
+    </RelativeLayout>
+</FrameLayout>

@@ -2,17 +2,18 @@ package com.plantstore;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.plantstore.config.RetrofitClient;
-import com.plantstore.models.User;
+import com.plantstore.models.api.LoginRequest;
+import com.plantstore.models.api.UserResponse;
+import com.plantstore.network.RetrofitClient;
 import com.plantstore.services.UserApiService;
+import com.plantstore.ultils.SharedPrefUtils;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,21 +39,19 @@ public class LoginActivity extends AppCompatActivity {
                 String username = editTextUsername.getText().toString().trim();
                 String password = editTextPassword.getText().toString().trim();
 
+                LoginRequest loginRequest = new LoginRequest(username, password);
                 // Call the login API
-                Call<User> loginCall = userApiService.login(username, password);
-                loginCall.enqueue(new Callback<User>() {
+                Call<UserResponse> loginCall = userApiService.login(loginRequest);
+                loginCall.enqueue(new Callback<UserResponse>() {
                     @Override
-                    public void onResponse(Call<User> call, Response<User> response) {
+                    public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
                         if (response.isSuccessful()) {
-                            System.out.println(response.body());
-//                            User userResponse = response.body();
-//                            User user = userResponse.getUser();
-//
-//                            // Save the user data to local storage (SharedPreferences, SQLite, etc.)
-//                            saveUserLocally(user);
-
+                            UserResponse userResponse = response.body();
+                            SharedPrefUtils.saveUserResponseLocally(LoginActivity.this, userResponse);
                             // Proceed to the next screen or perform the desired action
-                            // ...
+                            Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                            finish();
                         } else {
                             // Handle API error response
                             Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
@@ -60,21 +59,12 @@ public class LoginActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onFailure(Call<User> call, Throwable t) {
+                    public void onFailure(Call<UserResponse> call, Throwable t) {
                         // Handle API call failure
                         Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
         });
-    }
-
-    private void saveUserLocally(User user) {
-        // Save the user data to local storage (SharedPreferences, SQLite, etc.)
-        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("userId", user.getId().toString());
-        editor.putString("username", user.getUsername());
-        editor.apply();
     }
 }

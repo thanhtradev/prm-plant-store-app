@@ -1,4 +1,4 @@
-package com.plantstore.models;
+package com.plantstore.entities;
 
 public class User {
     private Long id;

@@ -8,8 +8,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.plantstore.config.RetrofitClient;
-import com.plantstore.models.User;
+import com.plantstore.models.api.UserResponse;
+import com.plantstore.models.api.RegisterRequest;
+
+import com.plantstore.network.RetrofitClient;
 import com.plantstore.services.UserApiService;
 
 import retrofit2.Call;
@@ -44,10 +46,12 @@ public class RegisterActivity extends AppCompatActivity {
                 } else {
                     // Perform registration logic here
                     // You can call a registration API or save the data to a database
-                    Call<User> registerCall = userApiService.register(username, password);
-                    registerCall.enqueue(new Callback<User>() {
+                    RegisterRequest userRequest = new RegisterRequest(username, password);
+
+                    Call<UserResponse> registerCall = userApiService.register(userRequest);
+                    registerCall.enqueue(new Callback<UserResponse>() {
                         @Override
-                        public void onResponse(Call<User> call, Response<User> response) {
+                        public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
                             if (response.isSuccessful()) {
                                 // Registration successful
                                 Toast.makeText(RegisterActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
@@ -60,7 +64,7 @@ public class RegisterActivity extends AppCompatActivity {
                         }
 
                         @Override
-                        public void onFailure(Call<User> call, Throwable t) {
+                        public void onFailure(Call<UserResponse> call, Throwable t) {
                             // Registration failed
                             Toast.makeText(RegisterActivity.this, "Registration failed here", Toast.LENGTH_SHORT).show();
                         }
